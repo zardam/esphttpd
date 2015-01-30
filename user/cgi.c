@@ -6,9 +6,9 @@ flash as a binary. Also handles the hit counter on the main page.
 /*
  * ----------------------------------------------------------------------------
  * "THE BEER-WARE LICENSE" (Revision 42):
- * Jeroen Domburg <jeroen@spritesmods.com> wrote this file. As long as you retain 
- * this notice you can do whatever you want with this stuff. If we meet some day, 
- * and you think this stuff is worth it, you can buy me a beer in return. 
+ * Jeroen Domburg <jeroen@spritesmods.com> wrote this file. As long as you retain
+ * this notice you can do whatever you want with this stuff. If we meet some day,
+ * and you think this stuff is worth it, you can buy me a beer in return.
  * ----------------------------------------------------------------------------
  */
 
@@ -31,7 +31,7 @@ static char currLedState=0;
 int ICACHE_FLASH_ATTR cgiLed(HttpdConnData *connData) {
 	int len;
 	char buff[1024];
-	
+
 	if (connData->conn==NULL) {
 		//Connection aborted. Clean up.
 		return HTTPD_CGI_DONE;
@@ -102,3 +102,25 @@ int ICACHE_FLASH_ATTR cgiReadFlash(HttpdConnData *connData) {
 	if (*pos>=0x40200000+(512*1024)) return HTTPD_CGI_DONE; else return HTTPD_CGI_MORE;
 }
 
+static void ICACHE_FLASH_ATTR rebootTimerCb(void *arg) {
+	ioLed(0);
+	os_printf("Rebooting modem done\n");
+}
+
+int ICACHE_FLASH_ATTR cgiReboot(HttpdConnData *connData) {
+	static ETSTimer rebootTimer;
+
+	if (connData->conn==NULL) {
+		//Connection aborted. Clean up.
+		return HTTPD_CGI_DONE;
+	}
+
+	os_printf("Rebooting modem...\n");
+	ioLed(1);
+	os_timer_disarm(&rebootTimer);
+	os_timer_setfn(&rebootTimer, rebootTimerCb, NULL);
+	os_timer_arm(&rebootTimer, 5000, 0);
+
+	httpdRedirect(connData, "/index.tpl");
+	return HTTPD_CGI_DONE;
+}

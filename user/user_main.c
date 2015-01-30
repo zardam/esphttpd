@@ -3,9 +3,9 @@
 /*
  * ----------------------------------------------------------------------------
  * "THE BEER-WARE LICENSE" (Revision 42):
- * Jeroen Domburg <jeroen@spritesmods.com> wrote this file. As long as you retain 
- * this notice you can do whatever you want with this stuff. If we meet some day, 
- * and you think this stuff is worth it, you can buy me a beer in return. 
+ * Jeroen Domburg <jeroen@spritesmods.com> wrote this file. As long as you retain
+ * this notice you can do whatever you want with this stuff. If we meet some day,
+ * and you think this stuff is worth it, you can buy me a beer in return.
  * ----------------------------------------------------------------------------
  */
 
@@ -51,10 +51,11 @@ should be placed above the URLs they protect.
 */
 HttpdBuiltInUrl builtInUrls[]={
 	{"/", cgiRedirect, "/index.tpl"},
-	{"/flash.bin", cgiReadFlash, NULL},
-	{"/led.tpl", cgiEspFsTemplate, tplLed},
-	{"/index.tpl", cgiEspFsTemplate, tplCounter},
-	{"/led.cgi", cgiLed, NULL},
+	//{"/flash.bin", cgiReadFlash, NULL},
+	//{"/led.tpl", cgiEspFsTemplate, tplLed},
+	//{"/index.tpl", cgiEspFsTemplate, tplCounter},
+	//{"/led.cgi", cgiLed, NULL},
+	{"/reboot.cgi", cgiReboot, NULL},
 
 	//Routines to make the /wifi URL and everything beneath it work.
 
